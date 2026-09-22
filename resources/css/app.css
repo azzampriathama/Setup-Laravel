@@ -8,4 +8,58 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-script: 'Great Vibes', 'Segoe Script', 'Brush Script MT', cursive;
+
+    /* Warna utama Belia Cosmetic (pink magenta) */
+    --color-belia-50: #fdf1f7;
+    --color-belia-100: #fbdcec;
+    --color-belia-200: #f8c2de;
+    --color-belia-300: #f49bc8;
+    --color-belia-400: #ef6cad;
+    --color-belia-500: #f0359b;
+    --color-belia-600: #d91f82;
+    --color-belia-700: #b01768;
+    --color-belia-800: #8a1252;
+    --color-belia-900: #5f0c39;
+
+    /* Warna pendukung */
+    --color-belia-soft: #fbd3e8;
+    --color-belia-band: #fce7f3;
+
+    /* Warna halaman admin (ungu) */
+    --color-admin-300: #9d6f95;
+    --color-admin-500: #6b3a63;
+    --color-admin-700: #4a2545;
+    --color-admin-900: #2e1730;
+}
+
+@layer components {
+    .doodle {
+        background-repeat: repeat;
+        background-size: 240px 240px;
+    }
+
+    .doodle-pink {
+        background-color: var(--color-belia-500);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240' fill='none' stroke='%23ffffff' stroke-width='2' stroke-opacity='0.45' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M34 44c-6-6-16-2-16 6 0 8 16 18 16 18s16-10 16-18c0-8-10-12-16-6Z'/%3E%3Cpath d='M150 26l5 12 12 5-12 5-5 12-5-12-12-5 12-5 5-12Z'/%3E%3Ccircle cx='196' cy='150' r='9'/%3E%3Cpath d='M96 60h18v54H96z'/%3E%3Cpath d='M96 54h18v6H96z'/%3E%3Cpath d='M28 150h44M28 162h30'/%3E%3Cpath d='M120 100c0-7 11-7 11 0s-11 14-11 14-11-7-11-14 11-7 11 0Z'/%3E%3Cpath d='M170 190c0-6 9-6 9 0s-9 12-9 12-9-6-9-12 9-6 9 0Z'/%3E%3Cpath d='M52 100l10 10-10 10-10-10z'/%3E%3Ccircle cx='80' cy='196' r='4'/%3E%3Ccircle cx='210' cy='60' r='4'/%3E%3Cpath d='M124 176h40v22h-40z'/%3E%3Cpath d='M8 96c8-8 16 8 24 0'/%3E%3Cpath d='M196 96c8-8 16 8 24 0'/%3E%3C/svg%3E");
+    }
+
+    .doodle-plum {
+        background-color: var(--color-admin-700);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240' fill='none' stroke='%23ffffff' stroke-width='2' stroke-opacity='0.45' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='30' y='30' width='34' height='14' rx='4'/%3E%3Cpath d='M36 56h22'/%3E%3Cpath d='M120 24c0-7 11-7 11 0s-11 14-11 14-11-7-11-14 11-7 11 0Z'/%3E%3Cpath d='M170 40l6 14 14 6-14 6-6 14-6-14-14-6 14-6 6-14Z'/%3E%3Cpath d='M20 120h40v40H20z'/%3E%3Cpath d='M26 132h28M26 144h18'/%3E%3Ccircle cx='150' cy='120' r='12'/%3E%3Cpath d='M60 190h48M60 202h30'/%3E%3Cpath d='M132 176l14 14-14 14-14-14z'/%3E%3Ccircle cx='212' cy='196' r='5'/%3E%3Ccircle cx='96' cy='86' r='5'/%3E%3Cpath d='M196 88c8-8 16 8 24 0'/%3E%3Cpath d='M8 176c8-8 16 8 24 0'/%3E%3C/svg%3E");
+    }
+
+    /* Kartu di halaman keranjang & pembayaran */
+    .card-pink {
+        background-color: var(--color-belia-band);
+    }
+}
+
+.scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
 }

@@ -1,58 +1,81 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Belia Cosmetic — Implementasi Prototipe UI/UX ke Laravel
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Hasil penerjemahan prototipe desain `contoh web/website belia.png` (toko kosmetik **Belia Cosmetic**)
+menjadi aplikasi Laravel yang bisa langsung dijalankan.
 
-## About Laravel
+Stack: **Laravel 13**, **Tailwind CSS 4**, **Vite**, **SQLite**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Daftar halaman
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Route | Halaman | Sesuai prototipe |
+| --- | --- | --- |
+| `GET /` | Beranda: header + pencarian, nav kategori, hero slider, **Shop All**, banner **NEW ARRIVAL**, footer | Ya |
+| `GET /produk/{kategori}` | Listing **PRODUK SKINCARE / MAKEUP / BODYCARE / FRAGRANCE / SETS** (grid 3 kolom: gambar, nama, harga, tombol keranjang) | Ya |
+| `GET /cari?q=` | Hasil pencarian dari kolom pencarian header | Tambahan |
+| `GET /keranjang` | **Keranjang Belanja**: item, stepper −/+, Pilih Semua, Subtotal / Ongkos Kirim / Total, Check Out | Ya |
+| `GET /checkout` | **Metode Pembayaran**: Transfer Bank, E-Wallet, COD + Ringkasan Pesanan + tombol **Bayar** | Ya |
+| `GET /checkout/sukses/{invoice}` | Halaman invoice setelah pesanan dibuat | Tambahan |
+| `GET /masuk` | **MASUK KE AKUN BELIA** (background doodle pink) | Ya |
+| `GET /admin/masuk` | **MASUK SEBAGAI ADMIN** (background doodle ungu) | Ya |
+| `GET /admin` | Dashboard admin: statistik, daftar produk, pesanan terbaru (login admin saja) | Tambahan |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Cara menjalankan
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Prasyarat: PHP 8.3+, Composer, Node.js 20+, dan ekstensi `pdo_sqlite` aktif di `php.ini`
+(`extension=pdo_sqlite` — baris ini sudah diaktifkan di `C:\php\php.ini` pada mesin ini).
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+npm install
+npm run build
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Buka <http://127.0.0.1:8000>.
 
-## Contributing
+Saat pengembangan front-end, jalankan `npm run dev` (Vite) di terminal terpisah, atau
+`composer run dev` untuk menjalankan server + Vite + log sekaligus.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Akun demo
 
-## Code of Conduct
+| Peran | Login | Kata sandi |
+| --- | --- | --- |
+| Admin | `admin` atau `admin@belia.test` | `admin123` |
+| Pembeli | `beliauser` atau `user@belia.test` | `user123` |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Alur belanja
 
-## Security Vulnerabilities
+1. Beranda / halaman kategori → klik **Masukkan Keranjang**.
+2. `/keranjang` → centang produk yang ingin dibeli (atau **Pilih Semua**), lalu **Check Out**.
+3. `/checkout` → pilih metode pembayaran, isi data penerima, klik **Bayar**.
+4. Pesanan tersimpan di tabel `orders` + `order_items` dan halaman invoice muncul.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Catatan teknis
 
-## License
+- **Database SQLite**: file `database/database.sqlite`. Path-nya dibaca dari `DB_SQLITE_DATABASE`
+  (bukan `DB_DATABASE`) karena di mesin ini ada environment variable sistem `DB_DATABASE=db_laravel_13`
+  yang menimpa isi `.env`.
+- **Gambar produk**: karena foto asli tidak tersedia, setiap produk memakai placeholder CSS
+  (gradient sesuai kategori + ikon SVG di `App\Support\ProductIcon`). Kolom `products.icon`
+  menentukan bentuk ikonnya.
+- **Keranjang**: disimpan di session lewat `App\Support\Cart` (tidak perlu login untuk belanja).
+- **Ongkos kirim**: flat Rp. 20.000, gratis untuk pembelian mulai Rp. 250.000.
+- **Data produk**: `database/seeders/ProductSeeder.php` (29 produk, 5 kategori).
+- **Test**: `php artisan test` — mencakup katalog, keranjang, checkout, dan proteksi halaman admin.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Struktur penting
+
+```
+app/Http/Controllers/      HomeController, ProductController, CartController, CheckoutController, AuthController, Admin/DashboardController
+app/Support/Cart.php       logika keranjang berbasis session
+app/Support/ProductIcon.php ikon line-art pengganti foto produk
+resources/views/           layouts, components (logo, kartu produk, visual produk), halaman
+resources/css/app.css      tema warna Belia + pola doodle login
+```
+
+---
+
+Dibangun di atas skeleton [Laravel](https://laravel.com).
