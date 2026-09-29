@@ -10,8 +10,6 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->call(ProductSeeder::class);
-
         User::updateOrCreate(
             ['email' => 'admin@belia.test'],
             [

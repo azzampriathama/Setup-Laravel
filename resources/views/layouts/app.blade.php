@@ -1,9 +1,8 @@
 @php
-    use App\Models\Product;
+    use App\Support\Catalog;
 
-    $navCategories = Product::CATEGORIES;
+    $navCategories = Catalog::CATEGORIES;
     $activeCategory = request()->routeIs('products.category') ? request()->route('category') : null;
-    $cartCount = cart()->count();
 @endphp
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
@@ -23,7 +22,6 @@
 <body class="flex min-h-screen flex-col bg-white font-sans text-slate-800 antialiased">
     <header class="sticky top-0 z-40 border-b border-belia-100 bg-white/95 backdrop-blur">
         <div class="mx-auto max-w-6xl px-4">
-            {{-- Baris atas: logo, pencarian, ikon --}}
             <div class="flex items-center gap-4 py-3">
                 <a href="{{ route('home') }}" class="shrink-0" aria-label="Belia Cosmetic">
                     <x-logo size="md" />
@@ -89,16 +87,11 @@
                             <circle cx="9" cy="20" r="1.5" />
                             <circle cx="18" cy="20" r="1.5" />
                         </svg>
-                        @if ($cartCount > 0)
-                            <span
-                                class="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-belia-500 px-1 text-[10px] font-semibold text-white">{{ $cartCount }}</span>
-                        @endif
                         <span class="sr-only">Keranjang belanja</span>
                     </a>
                 </div>
             </div>
 
-            {{-- Navigasi kategori --}}
             <nav class="flex flex-wrap items-center gap-x-7 gap-y-2 pb-3 text-sm">
                 <a href="{{ route('home') }}"
                     class="{{ request()->routeIs('home') ? 'font-semibold text-belia-600' : 'text-slate-700 hover:text-belia-600' }}">Beranda</a>

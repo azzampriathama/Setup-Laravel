@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Support\Catalog;
 use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
 {
-    /**
-     * Banner slider di halaman beranda.
-     *
-     * @var array<int, array{title: string, subtitle: string, text: string, cta: string, category: string}>
-     */
     public const SLIDES = [
         [
             'eyebrow' => 'Your Beauty',
@@ -49,14 +44,12 @@ class HomeController extends Controller
 
     public function index(): View
     {
+        $products = collect(Catalog::PRODUCTS)->keyBy('slug');
+
         return view('home', [
             'slides' => self::SLIDES,
-            'shopAll' => Product::query()->featured()->orderBy('sort_order')->get(),
-            'newArrivals' => Product::query()
-                ->category('sets')
-                ->orderBy('sort_order')
-                ->take(2)
-                ->get(),
+            'shopAll' => $products->where('featured', true)->values(),
+            'newArrivals' => $products->where('category', 'sets')->where('badge', 'NEW ARRIVAL')->values(),
         ]);
     }
 }
