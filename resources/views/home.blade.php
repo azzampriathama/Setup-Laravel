@@ -12,7 +12,6 @@
         ];
     @endphp
 
-    {{-- ================= Hero slider ================= --}}
     <section class="mx-auto max-w-6xl px-4 pt-6">
         <div class="relative" data-slider>
             <div class="overflow-hidden rounded-2xl shadow-sm">
@@ -43,7 +42,7 @@
                                     @foreach (['spray', 'bottle', 'jar'] as $heroIcon)
                                         <span
                                             class="flex h-32 w-24 items-center justify-center rounded-xl bg-white/50 ring-1 ring-white/70">
-                                            {!! \App\Support\ProductIcon::svg($heroIcon, 'h-14 w-14') !!}
+                                            {!! \App\Support\Catalog::svg($heroIcon, 'h-14 w-14') !!}
                                         </span>
                                     @endforeach
                                 </div>
@@ -72,7 +71,6 @@
         </div>
     </section>
 
-    {{-- ================= Shop All ================= --}}
     <section class="mt-10 bg-slate-100 py-8">
         <div class="mx-auto max-w-6xl px-4">
             <h2 class="text-lg font-semibold text-slate-800">Shop All</h2>
@@ -106,19 +104,18 @@
         </div>
     </section>
 
-    {{-- ================= New Arrival ================= --}}
     <section class="mx-auto mt-10 max-w-6xl px-4">
         <div class="grid gap-5 sm:grid-cols-2">
             @forelse ($newArrivals as $product)
                 <article class="flex items-center gap-4 overflow-hidden rounded-xl bg-belia-soft p-5">
                     <div class="flex-1">
                         <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-belia-600">
-                            {{ $product->badge ?? 'New Arrival' }}
+                            {{ $product['badge'] ?? 'New Arrival' }}
                         </p>
-                        <h3 class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-800">{{ $product->name }}
+                        <h3 class="mt-1 text-sm font-bold uppercase tracking-wide text-slate-800">{{ $product['name'] }}
                         </h3>
-                        <p class="mt-1 text-xs text-slate-600">{{ rupiah($product->price) }}</p>
-                        <a href="{{ route('products.category', $product->category) }}"
+                        <p class="mt-1 text-xs text-slate-600">{{ rupiah($product['price']) }}</p>
+                        <a href="{{ route('products.category', $product['category']) }}"
                             class="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[11px] font-medium text-belia-700 shadow-sm transition hover:bg-belia-50">
                             Belanja Sekarang
                             <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor"

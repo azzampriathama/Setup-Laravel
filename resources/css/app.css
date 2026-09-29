@@ -10,7 +10,6 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
     --font-script: 'Great Vibes', 'Segoe Script', 'Brush Script MT', cursive;
 
-    /* Warna utama Belia Cosmetic (pink magenta) */
     --color-belia-50: #fdf1f7;
     --color-belia-100: #fbdcec;
     --color-belia-200: #f8c2de;
@@ -22,11 +21,9 @@
     --color-belia-800: #8a1252;
     --color-belia-900: #5f0c39;
 
-    /* Warna pendukung */
     --color-belia-soft: #fbd3e8;
     --color-belia-band: #fce7f3;
 
-    /* Warna halaman admin (ungu) */
     --color-admin-300: #9d6f95;
     --color-admin-500: #6b3a63;
     --color-admin-700: #4a2545;
@@ -49,10 +46,6 @@
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240' fill='none' stroke='%23ffffff' stroke-width='2' stroke-opacity='0.45' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='30' y='30' width='34' height='14' rx='4'/%3E%3Cpath d='M36 56h22'/%3E%3Cpath d='M120 24c0-7 11-7 11 0s-11 14-11 14-11-7-11-14 11-7 11 0Z'/%3E%3Cpath d='M170 40l6 14 14 6-14 6-6 14-6-14-14-6 14-6 6-14Z'/%3E%3Cpath d='M20 120h40v40H20z'/%3E%3Cpath d='M26 132h28M26 144h18'/%3E%3Ccircle cx='150' cy='120' r='12'/%3E%3Cpath d='M60 190h48M60 202h30'/%3E%3Cpath d='M132 176l14 14-14 14-14-14z'/%3E%3Ccircle cx='212' cy='196' r='5'/%3E%3Ccircle cx='96' cy='86' r='5'/%3E%3Cpath d='M196 88c8-8 16 8 24 0'/%3E%3Cpath d='M8 176c8-8 16 8 24 0'/%3E%3C/svg%3E");
     }
 
-    /* Kartu di halaman keranjang & pembayaran */
-    .card-pink {
-        background-color: var(--color-belia-band);
-    }
 }
 
 .scrollbar-none {

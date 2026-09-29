@@ -3,30 +3,29 @@
 @section('title', 'Metode Pembayaran — Belia Cosmetic')
 
 @section('content')
+    @php
+        $methods = [
+            'transfer' => ['label' => 'Transfer Bank', 'description' => 'BCA, BNI, BRI, Mandiri', 'icon' => 'bank'],
+            'ewallet' => ['label' => 'E-Wallet', 'description' => 'DANA, OVO, GoPay, ShopeePay', 'icon' => 'wallet'],
+            'cod' => ['label' => 'COD (Bayar di tempat)', 'description' => 'Tersedia untuk area tertentu', 'icon' => 'cash'],
+        ];
+        $items = [
+            ['name' => 'Toner Pad Skintific', 'qty' => 1, 'subtotal' => 129000],
+            ['name' => 'Rhode Lip Serum', 'qty' => 2, 'subtotal' => 150000],
+        ];
+        $subtotal = collect($items)->sum('subtotal');
+    @endphp
+
     <section class="mx-auto max-w-3xl px-4 pt-8">
         <h1 class="text-lg font-semibold text-slate-800">Metode Pembayaran</h1>
 
-        <form method="POST" action="{{ route('checkout.store') }}" class="mt-6 space-y-6">
-            @csrf
-
-            @if ($errors->any())
-                <div class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-                    <p class="font-medium">Data pesanan belum lengkap:</p>
-                    <ul class="mt-1 list-inside list-disc">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            {{-- ============ Pilihan metode pembayaran ============ --}}
+        <div class="mt-6 space-y-6">
             <div class="space-y-4">
                 @foreach ($methods as $key => $method)
                     <label
                         class="flex cursor-pointer items-center gap-4 rounded-lg bg-belia-band p-4 ring-belia-400 transition has-[:checked]:ring-2">
                         <input type="radio" name="payment_method" value="{{ $key }}" class="peer sr-only"
-                            @checked($selectedMethod === $key)>
+                            @checked($loop->first)>
 
                         <span class="flex h-12 w-12 shrink-0 items-center justify-center text-slate-900">
                             @switch($method['icon'])
@@ -63,14 +62,12 @@
                             <span class="mt-0.5 block text-sm text-belia-700/80">{{ $method['description'] }}</span>
                         </span>
 
-                        {{-- Lingkaran (belum dipilih) --}}
                         <span class="peer-checked:hidden">
                             <svg class="h-6 w-6 text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="1.8">
                                 <circle cx="12" cy="12" r="9" />
                             </svg>
                         </span>
-                        {{-- Centang (sudah dipilih) --}}
                         <span class="hidden peer-checked:inline-flex text-slate-900">
                             <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
                                 stroke-linecap="round" stroke-linejoin="round">
@@ -82,41 +79,38 @@
                 @endforeach
             </div>
 
-            {{-- ============ Data penerima ============ --}}
             <div class="rounded-lg bg-belia-band px-5 py-6">
                 <h2 class="text-base font-semibold text-slate-800">Data Penerima</h2>
 
                 <div class="mt-4 grid gap-4 sm:grid-cols-2">
                     <div>
                         <label for="customer_name" class="text-xs font-medium text-slate-600">Nama Penerima</label>
-                        <input id="customer_name" name="customer_name" type="text"
-                            value="{{ old('customer_name', $user->name ?? '') }}" required placeholder="Nama lengkap"
+                        <input id="customer_name" name="customer_name" type="text" value="{{ auth()->user()->name ?? '' }}"
+                            placeholder="Nama lengkap"
                             class="mt-1 w-full rounded-md border border-white bg-white px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-belia-400 focus:outline-none">
                     </div>
                     <div>
                         <label for="customer_phone" class="text-xs font-medium text-slate-600">Nomor HP</label>
-                        <input id="customer_phone" name="customer_phone" type="tel" value="{{ old('customer_phone') }}"
-                            required placeholder="08xxxxxxxxxx"
+                        <input id="customer_phone" name="customer_phone" type="tel" placeholder="08xxxxxxxxxx"
                             class="mt-1 w-full rounded-md border border-white bg-white px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-belia-400 focus:outline-none">
                     </div>
                 </div>
 
                 <div class="mt-4">
                     <label for="customer_address" class="text-xs font-medium text-slate-600">Alamat Lengkap</label>
-                    <textarea id="customer_address" name="customer_address" rows="3" required
+                    <textarea id="customer_address" name="customer_address" rows="3"
                         placeholder="Jalan, nomor rumah, kelurahan, kecamatan, kota, kode pos"
-                        class="mt-1 w-full rounded-md border border-white bg-white px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-belia-400 focus:outline-none">{{ old('customer_address') }}</textarea>
+                        class="mt-1 w-full rounded-md border border-white bg-white px-3 py-2 text-sm text-slate-700 placeholder:text-slate-400 focus:border-belia-400 focus:outline-none"></textarea>
                 </div>
             </div>
 
-            {{-- ============ Ringkasan pesanan ============ --}}
             <div class="rounded-lg bg-belia-band px-5 py-6">
                 <h2 class="text-base font-semibold text-slate-800">Ringkasan Pesanan</h2>
 
                 <ul class="mt-4 space-y-2 border-b border-belia-200 pb-4 text-sm text-slate-700">
                     @foreach ($items as $item)
                         <li class="flex items-start justify-between gap-4">
-                            <span>{{ $item['product']->name }}
+                            <span>{{ $item['name'] }}
                                 <span class="text-xs text-slate-500">x{{ $item['qty'] }}</span>
                             </span>
                             <span class="shrink-0">{{ rupiah($item['subtotal']) }}</span>
@@ -127,27 +121,21 @@
                 <dl class="mt-4 space-y-2 text-sm">
                     <div class="flex items-center justify-between">
                         <dt class="text-slate-700">Subtotal</dt>
-                        <dd class="font-medium text-slate-800">{{ rupiah($summary['subtotal']) }}</dd>
+                        <dd class="font-medium text-slate-800">{{ rupiah($subtotal) }}</dd>
                     </div>
                     <div class="flex items-center justify-between">
-                        <dt class="flex items-center gap-1.5 text-slate-700">
-                            Ongkos Kirim
-                            <span title="{{ \App\Http\Controllers\CheckoutController::shippingInfo() }}"
-                                class="inline-flex h-4 w-4 cursor-help items-center justify-center rounded-full border border-slate-500 text-[10px] text-slate-600">i</span>
-                        </dt>
-                        <dd class="font-medium text-slate-800">
-                            {{ $summary['shipping'] === 0 ? 'Gratis' : rupiah($summary['shipping']) }}
-                        </dd>
+                        <dt class="text-slate-700">Ongkos Kirim</dt>
+                        <dd class="font-medium text-slate-800">Gratis</dd>
                     </div>
                     <div class="flex items-center justify-between pt-1 text-base">
                         <dt class="font-semibold text-slate-800">Total</dt>
-                        <dd class="font-semibold text-belia-700">{{ rupiah($summary['total']) }}</dd>
+                        <dd class="font-semibold text-belia-700">{{ rupiah($subtotal) }}</dd>
                     </div>
                 </dl>
             </div>
 
             <div class="pt-2 text-center">
-                <button type="submit"
+                <button type="button"
                     class="w-full max-w-xs rounded-full bg-belia-500 py-3 text-sm font-semibold text-white shadow transition hover:bg-belia-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-belia-300">
                     Bayar
                 </button>
@@ -155,6 +143,6 @@
                     <a href="{{ route('cart.index') }}" class="hover:underline">&larr; Kembali ke keranjang belanja</a>
                 </p>
             </div>
-        </form>
+        </div>
     </section>
 @endsection
